@@ -29,7 +29,10 @@ class RaspberryGui(object):
         InfoSchrapperLabel = ttk.Label(self.mainframe, text="Schrapper automaat aanzetten: ").grid(column=0, row=0, sticky=W)
         LegeLabel = ttk.Label(self.mainframe, text="               ").grid(column=0, row=1, sticky=W)
         Legelabel_2 = ttk.Label(self.mainframe, text="                    ").grid(column=0, row=6, sticky=W)
-
+        #Voor handmatige bediening de status van deze apparaten definieren:
+        self.Opvoerbandstatus = False
+        self.Waterklepstatus = False
+        self.Luchtklepstatus = False
 
 
         global running
@@ -70,7 +73,14 @@ class RaspberryGui(object):
 
         self.StartSchrappenButton = ttk.Button(self.mainframe, text="Start schrappen ", command=self.starten)
         self.StartSchrappenButton.grid(column=0, row=5, sticky=W)
-        StopSchrappenButton = ttk.Button(self.mainframe, text="Stop schrappen ", command=self.StopSchrappen).grid(column=0, row=7, sticky=W)
+        StopSchrappenButton = ttk.Button(self.mainframe, text="Stop schrappen + open HANDBEDIEND", command=self.StopSchrappen).grid(column=0, row=7, sticky=W)
+
+        self.OpvoerbandButton = Button(self.mainframe, text="(HAND) Opvoerband ", command=self.Opvoerband, width=30, bg="green")
+        self.OpvoerbandButton.grid(column=3, row=1, sticky=W, pady=5, ipadx=30)
+        self.WaterAanButton = Button(self.mainframe, text="(HAND) Water aan", command=self.WaterAan, bg="green", width=30)
+        self.WaterAanButton.grid(column=3, row=2, sticky=W, pady=5, ipadx=30)
+        self.KlepOpenButton = Button(self.mainframe, text="(HAND) Klep open ", command=self.KlepOpen, bg="green", width=30)
+        self.KlepOpenButton.grid(column=3, row=3, sticky=W, pady=5, ipadx=30)
         bepaal_schrap_standaard_button_1 = ttk.Button(self.mainframe, text="Kort schrappen ", command=self.bepaal_schrap_standaard_1).grid(column=3, row=9, sticky=W)
         bepaal_schrap_standaard_button_2 = ttk.Button(self.mainframe, text="Middel schrappen ", command=self.bepaal_schrap_standaard_2).grid(column=3, row=10, sticky=W)
         bepaal_schrap_standaard_button_3 = ttk.Button(self.mainframe, text="Lang schrappen ", command=self.bepaal_schrap_standaard_3).grid(column=3, row=11, sticky=W)
@@ -82,7 +92,7 @@ class RaspberryGui(object):
 
         #Statuslabel om aan te geven waar in het proces de loop zich bevindt.
         self.Status_text = Text(self.mainframe, height=1, width = 40, bg = "red")
-        self.Status_text.insert(INSERT, " ---  STATUS  ---")
+        self.Status_text.insert(INSERT, " ---  STATUS BEGINSTAND ---")
         self.Status_text.grid(column=1, row=2, sticky=W)
 
         #RPI instellingen definiëren:
@@ -101,10 +111,18 @@ class RaspberryGui(object):
     def run(self):
         self.root.mainloop()
 
-    ##
+
     def starten(self):
-        #GPIO.output(13, GPIO.HIGH)
+        #Bij het starten staan alle functies onbediend, zodat handmatig ingrijpen ook eventueel wordt gereset.
+        #GPIO.output(26, GPIO.HIGH)
         #GPIO.output(19, GPIO.HIGH)
+        #GPIO.output(13, GPIO.HIGH)
+        self.Opvoerbandstatus = False
+        self.Waterklepstatus = False
+        self.Luchtklepstatus = False
+        self.OpvoerbandButton.grid_forget()
+        self.WaterAanButton.grid_forget()
+        self.KlepOpenButton.grid_forget()
         global running
         running = True
         self.Status_text = Text(self.mainframe, height=1, width=40, bg="Green")
@@ -210,6 +228,75 @@ class RaspberryGui(object):
 
 
 
+
+
+    #volgende 3 functies om handmatig bij het indrukken van de buttons de functies te bedienen:
+    def Opvoerband(self):
+        # GPIO.output(26, GPIO.HIGH)
+        # GPIO.output(19, GPIO.HIGH)
+        # GPIO.output(13, GPIO.HIGH)
+        global running
+        running = False
+        self.Status_text = Text(self.mainframe, height=1, width=40, bg="red")
+        self.Status_text.insert(INSERT, " ---  STATUS AUTOMAAT GESTOPT   ---")
+        self.Status_text.grid(column=1, row=2, sticky=W)
+        if self.Opvoerbandstatus == False:
+            #GPIO.output(26, GPIO.LOW)
+            self.OpvoerbandButton = Button(self.mainframe, text="(HAND) Opvoerband ", command=self.Opvoerband, bg="Red", width=30).grid(column=3, row=1, sticky=W, pady=5, ipadx=30)
+
+            self.Opvoerbandstatus = True
+        else:
+            #GPIO.output(26, GPIO.HIGH)
+            self.OpvoerbandButton = Button(self.mainframe, text="(HAND) Opvoerband ", command=self.Opvoerband, bg="Green", width=30).grid(column=3, row=1, sticky=W, pady=5, ipadx=30)
+            self.Opvoerbandstatus = False
+
+        print("Opvoerbandddd")
+
+
+    def WaterAan(self):
+        # GPIO.output(26, GPIO.HIGH)
+        # GPIO.output(19, GPIO.HIGH)
+        # GPIO.output(13, GPIO.HIGH)
+        global running
+        running = False
+        self.Status_text = Text(self.mainframe, height=1, width=40, bg="red")
+        self.Status_text.insert(INSERT, " ---  STATUS AUTOMAAT GESTOPT   ---")
+        self.Status_text.grid(column=1, row=2, sticky=W)
+        if self.Waterklepstatus == False:
+            #GPIO.output(19, GPIO.LOW)
+            self.WaterAanButton = Button(self.mainframe, text="(HAND) Water aan ", command=self.WaterAan, bg="Red", width=30).grid(column=3, row=2, sticky=W, pady=5, ipadx=30)
+
+            self.Waterklepstatus = True
+        else:
+            #GPIO.output(19, GPIO.HIGH)
+            self.WaterAanButton = Button(self.mainframe, text="(HAND) Water aan ", command=self.WaterAan, bg="Green", width=30).grid(column=3, row=2, sticky=W, pady=5, ipadx=30)
+            self.Waterklepstatus = False
+
+        print("WATERRR")
+
+
+
+    def KlepOpen(self):
+        # GPIO.output(26, GPIO.HIGH)
+        # GPIO.output(19, GPIO.HIGH)
+        # GPIO.output(13, GPIO.HIGH)
+        global running
+        running = False
+        self.Status_text = Text(self.mainframe, height=1, width=40, bg="red")
+        self.Status_text.insert(INSERT, " ---  STATUS AUTOMAAT GESTOPT   ---")
+        self.Status_text.grid(column=1, row=2, sticky=W)
+        if self.Luchtklepstatus == False:
+            #GPIO.output(13, GPIO.LOW)
+            self.KlepOpenButton = Button(self.mainframe, text="(HAND) Klep open ", command=self.KlepOpen, bg="Red", width=30).grid(column=3, row=3, sticky=W, pady=5, ipadx=30)
+            self.Luchtklepstatus = True
+        else:
+            #GPIO.output(13, GPIO.HIGH)
+            self.KlepOpenButton = Button(self.mainframe, text="(HAND) Klep open ", command=self.KlepOpen, bg="Green", width=30).grid(column=3, row=3, sticky=W, pady=5, ipadx=30)
+            self.Luchtklepstatus = False
+        print("Luchtleppp")
+
+
+
     def print_tijd_vullen(self, variabele_vullen):
         x = decimal.Decimal(variabele_vullen)
         variabele_vullen = int(round(x, 0))
@@ -267,11 +354,11 @@ class RaspberryGui(object):
         return myconfig.wachttijd_standaard_tijd
 
 
-if __name__ == '__main__':
+def HerhaalInterface():
     p = RaspberryGui()
     p.run()
 
-#herhaal = True
-#while herhaal:
-#    herhaal_gui()
+herhaal = True
+while herhaal:
+   HerhaalInterface()
 
