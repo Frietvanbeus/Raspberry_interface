@@ -242,12 +242,14 @@ class RaspberryGui(object):
         self.Status_text.grid(column=1, row=2, sticky=W)
         if self.Opvoerbandstatus == False:
             #GPIO.output(26, GPIO.LOW)
-            self.OpvoerbandButton = Button(self.mainframe, text="(HAND) Opvoerband ", command=self.Opvoerband, bg="Red", width=30).grid(column=3, row=1, sticky=W, pady=5, ipadx=30)
+            self.OpvoerbandButton = Button(self.mainframe, text="(HAND) Opvoerband ", command=self.Opvoerband, bg="Red", width=30)
+            self.OpvoerbandButton.grid(column=3, row=1, sticky=W, pady=5, ipadx=30)
 
             self.Opvoerbandstatus = True
         else:
             #GPIO.output(26, GPIO.HIGH)
-            self.OpvoerbandButton = Button(self.mainframe, text="(HAND) Opvoerband ", command=self.Opvoerband, bg="Green", width=30).grid(column=3, row=1, sticky=W, pady=5, ipadx=30)
+            self.OpvoerbandButton = Button(self.mainframe, text="(HAND) Opvoerband ", command=self.Opvoerband, bg="Green", width=30)
+            self.OpvoerbandButton.grid(column=3, row=1, sticky=W, pady=5, ipadx=30)
             self.Opvoerbandstatus = False
 
         print("Opvoerbandddd")
@@ -264,12 +266,14 @@ class RaspberryGui(object):
         self.Status_text.grid(column=1, row=2, sticky=W)
         if self.Waterklepstatus == False:
             #GPIO.output(19, GPIO.LOW)
-            self.WaterAanButton = Button(self.mainframe, text="(HAND) Water aan ", command=self.WaterAan, bg="Red", width=30).grid(column=3, row=2, sticky=W, pady=5, ipadx=30)
+            self.WaterAanButton = Button(self.mainframe, text="(HAND) Water aan ", command=self.WaterAan, bg="Red", width=30)
+            self.WaterAanButton.grid(column=3, row=2, sticky=W, pady=5, ipadx=30)
 
             self.Waterklepstatus = True
         else:
             #GPIO.output(19, GPIO.HIGH)
-            self.WaterAanButton = Button(self.mainframe, text="(HAND) Water aan ", command=self.WaterAan, bg="Green", width=30).grid(column=3, row=2, sticky=W, pady=5, ipadx=30)
+            self.WaterAanButton = Button(self.mainframe, text="(HAND) Water aan ", command=self.WaterAan, bg="Green", width=30)
+            self.WaterAanButton.grid(column=3, row=2, sticky=W, pady=5, ipadx=30)
             self.Waterklepstatus = False
 
         print("WATERRR")
@@ -287,11 +291,13 @@ class RaspberryGui(object):
         self.Status_text.grid(column=1, row=2, sticky=W)
         if self.Luchtklepstatus == False:
             #GPIO.output(13, GPIO.LOW)
-            self.KlepOpenButton = Button(self.mainframe, text="(HAND) Klep open ", command=self.KlepOpen, bg="Red", width=30).grid(column=3, row=3, sticky=W, pady=5, ipadx=30)
+            self.KlepOpenButton = Button(self.mainframe, text="(HAND) Klep open ", command=self.KlepOpen, bg="Red", width=30)
+            self.KlepOpenButton.grid(column=3, row=3, sticky=W, pady=5, ipadx=30)
             self.Luchtklepstatus = True
         else:
             #GPIO.output(13, GPIO.HIGH)
-            self.KlepOpenButton = Button(self.mainframe, text="(HAND) Klep open ", command=self.KlepOpen, bg="Green", width=30).grid(column=3, row=3, sticky=W, pady=5, ipadx=30)
+            self.KlepOpenButton = Button(self.mainframe, text="(HAND) Klep open ", command=self.KlepOpen, bg="Green", width=30)
+            self.KlepOpenButton.grid(column=3, row=3, sticky=W, pady=5, ipadx=30)
             self.Luchtklepstatus = False
         print("Luchtleppp")
 
